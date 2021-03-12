@@ -11,8 +11,6 @@ CONSUMER_KEY = os.getenv('CONSUMER_KEY')
 CONSUMER_SECRET = os.getenv('CONSUMER_SECRET')
 ACCESS_TOKEN = os.getenv('ACCESS_TOKEN')
 ACCESS_TOKEN_SECRET = os.getenv('ACCESS_TOKEN_SECRET')
-
-
 # API Authentication
 def connect_to_twitter_simple():
     # Authenticate to Twitter
@@ -30,7 +28,13 @@ def connect_to_twitter_simple():
     except:
         print("Error during authentication")
 
+def get_count(file):
+    count = "get the value inside the file"
+    return count
 
+def set_count(file):
+    count = 1
+    print("COUNT HAS BEEN SET TO" + count)
 
 # Functions to send a tweet automatically given the arguments
 def send_tweet(api, topic):
@@ -40,7 +44,7 @@ def send_tweet(api, topic):
 
 def send_tweet_with_media(api, topic, media):
     twitter_text = "test"
-    media = api.media_upload(media)
+    media = api.media_upload("images/"+media)
     #api.update_with_media(media, twitter_text)
 
     # printing the information
@@ -53,18 +57,33 @@ def send_tweet_with_media(api, topic, media):
     print("The width is : " + str(media.image['w']) + " pixels.")
     print("The height is : " + str(media.image['h']) + " pixels.")
 
+def select_image():
+    choice = random.choice(os.listdir("images"))  # change dir name to whatever
+    print(choice)
+    return choice
+
+def remove_image(choice):
+    try:
+        os.remove("images/"+choice)
+        print("file has been removed")
+        return True
+    except:
+        print("Error while trying to remove the current image")
+
 # Main functions
 if __name__ == "__main__":
     randomnb = random.randint(0, 1000)
     api = connect_to_twitter_simple()
 
-    topic= "comment ça va ?" + str(randomnb)
-    media = "images/DSC_2515.jpg"
+    topic = "#"+str(randomnb)
+    media = select_image()
+    print(media)
 
     #print("Envoi : " + topic)
 
     try:
         send_tweet_with_media(api, topic, media)
+        remove_image(media)
         #send_tweet(api, topic)
         print("DONE")
     except tweepy.TweepError as e :
