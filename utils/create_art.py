@@ -13,6 +13,10 @@ def generate_simple_art(filename, random_color):
 
 if __name__=="__main__":
     random_color = generate_random_color()
+
     size = [1000, 1000]
 
     generate_simple_art("test.png", random_color)
+
+    random_color = '#%02X%02X%02X' % random_color
+    print(random_color)
